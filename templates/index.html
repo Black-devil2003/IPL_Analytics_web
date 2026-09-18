@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Cricket Performance Intelligence Platform (2008–2026)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+<div class="dashboard-shell">
+
+    <!-- PERSISTENT SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="/dashboard" data-link>
+            <img class="brand-logo" src="{{ url_for('static', filename='images/IPL.png') }}" alt="IPL Logo" onerror="this.src='https://img.icons8.com/color/96/cricket.png'">
+            <div class="brand-info">
+                <span class="brand-text">IPL Analytics</span>
+                <span class="brand-subtitle">Data • Insights • Performance</span>
+            </div>
+        </a>
+
+        <nav class="side-nav">
+            <a href="/dashboard" id="nav-dashboard" data-link>
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/teams" id="nav-teams" data-link>
+                <span class="nav-icon">🛡️</span>
+                <span>Teams</span>
+            </a>
+            <a href="/players" id="nav-players" data-link>
+                <span class="nav-icon">🏏</span>
+                <span>Players</span>
+            </a>
+            <a href="/matches" id="nav-matches" data-link>
+                <span class="nav-icon">⚔️</span>
+                <span>Matches</span>
+            </a>
+            <a href="/analysis" id="nav-analysis" data-link>
+                <span class="nav-icon">📈</span>
+                <span>Analysis</span>
+            </a>
+            <a href="/reports" id="nav-reports" data-link>
+                <span class="nav-icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <a href="/settings" id="nav-settings" data-link>
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer-note">
+            <strong>IPL 2008–2026</strong>
+            <span>Data-driven cricket intelligence</span>
+        </div>
+    </aside>
+
+    <!-- MOBILE NAVIGATION TOGGLE -->
+    <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+        ☰
+    </button>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+
+        <!-- PERSISTENT TOP HEADER -->
+        <header class="top-header">
+            <div class="header-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="global-search" placeholder="Search players, teams, matches..." autocomplete="off">
+                <div class="search-results-dropdown" id="search-results"></div>
+            </div>
+
+            <div class="header-actions">
+                <button class="notification-btn" id="notification-btn" title="Notifications">
+                    🔔
+                    <span class="notification-badge"></span>
+                </button>
+
+                <div class="user-profile">
+                    <div class="user-avatar">IA</div>
+                    <div class="user-info">
+                        <span class="user-name">IPL Analyst</span>
+                        <span class="user-role">Lead Data Engineer</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DYNAMIC BREADCRUMBS -->
+        <nav class="breadcrumbs-bar" id="breadcrumbs-bar">
+            <span class="crumb">IPL Analytics</span>
+            <span class="crumb-separator">/</span>
+            <span class="crumb active" id="current-crumb">Dashboard</span>
+        </nav>
+
+        <!-- ROUTE VIEW CONTAINERS -->
+        <div id="app-view-container">
+
+            <!-- ==================== 1. DASHBOARD VIEW ==================== -->
+            <section class="page-view" id="view-dashboard">
+                <div class="hero-banner">
+                    <div class="hero-content">
+                        <div class="hero-tag">⚡ OVERVIEW & PERFORMANCE SUMMARY</div>
+                        <h1 class="hero-title">IPL <span>2008–2026</span> Performance Analytics Dashboard</h1>
+                        <p class="hero-subtitle">Explore player and team performance across IPL seasons from 2008 to 2026.</p>
+                    </div>
+                    <div class="hero-3d-wrapper" id="dashboard-hero-3d"></div>
+                </div>
+
+                <!-- KPI CARDS -->
+                <div class="kpi-grid">
+                    <article class="kpi-card runs-card">
+                        <div class="kpi-icon-wrap">🏏</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Total Runs</span>
+                            <strong class="kpi-value" id="dash-total-runs">--</strong>
+                            <span class="kpi-subtitle">Selected dataset runs</span>
+                        </div>
+                    </article>
+                    <article class="kpi-card fours-card">
+                        <div class="kpi-icon-wrap">4️⃣</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Total Fours</span>
+                            <strong class="kpi-value" id="dash-total-fours">--</strong>
+                            <span class="kpi-subtitle">Boundary fours scored</span>
+                        </div>
+                    </article>
+                    <article class="kpi-card sixes-card">
+                        <div class="kpi-icon-wrap">6️⃣</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Total Sixes</span>
+                            <strong class="kpi-value" id="dash-total-sixes">--</strong>
+                            <span class="kpi-subtitle">Maximums cleared</span>
+                        </div>
+                    </article>
+                    <article class="kpi-card strike-card">
+                        <div class="kpi-icon-wrap">⚡</div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Avg Strike Rate</span>
+                            <strong class="kpi-value" id="dash-strike-rate">--</strong>
+                            <span class="kpi-subtitle">Runs per 100 balls</span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- DASHBOARD CHARTS & QUICK INSIGHTS -->
+                <div class="section-grid">
+                    <article class="chart-card card-span-8">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2 class="card-title">Runs by Player</h2>
+                                <span class="card-subtitle">Highest run scorers in selected dataset</span>
+                            </div>
+                        </div>
+                        <div id="dash-runs-chart" class="chart-container"></div>
+                    </article>
+
+                    <article class="chart-card card-span-4">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2 class="card-title">Quick Insights</h2>
+                                <span class="card-subtitle">Performance highlights</span>
+                            </div>
+                        </div>
+                        <div class="insights-panel">
+                            <div class="insight-item">
+                                <div class="insight-badge">🏆</div>
+                                <div class="insight-details">
+                                    <span class="insight-title">Highest Scorer</span>
+                                    <span class="insight-player" id="dash-insight-top-scorer">Loading...</span>
+                                    <span class="insight-metric" id="dash-insight-top-scorer-val">--</span>
+                                </div>
+                            </div>
+                            <div class="insight-item">
+                                <div class="insight-badge">🔥</div>
+                                <div class="insight-details">
+                                    <span class="insight-title">Most Sixes</span>
+                                    <span class="insight-player" id="dash-insight-sixes-player">Loading...</span>
+                                    <span class="insight-metric" id="dash-insight-sixes-val">--</span>
+                                </div>
+                            </div>
+                            <div class="insight-item">
+                                <div class="insight-badge">⚡</div>
+                                <div class="insight-details">
+                                    <span class="insight-title">Best Strike Rate</span>
+                                    <span class="insight-player" id="dash-insight-sr-player">Loading...</span>
+                                    <span class="insight-metric" id="dash-insight-sr-val">--</span>
+                                </div>
+                            </div>
+                            <div class="insight-item">
+                                <div class="insight-badge">🏏</div>
+                                <div class="insight-details">
+                                    <span class="insight-title">Top Team</span>
+                                    <span class="insight-player" id="dash-insight-team-name">Loading...</span>
+                                    <span class="insight-metric" id="dash-insight-team-val">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="section-grid">
+                    <article class="chart-card card-span-8">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2 class="card-title">Runs vs Strike Rate</h2>
+                                <span class="card-subtitle">Scatter plot with average strike rate reference line</span>
+                            </div>
+                        </div>
+                        <div id="dash-strike-chart" class="chart-container"></div>
+                    </article>
+
+                    <article class="chart-card card-span-4">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2 class="card-title">Runs by Team</h2>
+                                <span class="card-subtitle">Franchise run distribution</span>
+                            </div>
+                        </div>
+                        <div id="dash-teams-chart" class="chart-container"></div>
+                    </article>
+                </div>
+
+                <div class="section-grid">
+                    <article class="chart-card card-span-6">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2 class="card-title">50s and 100s by Player</h2>
+                                <span class="card-subtitle">Milestones breakdown</span>
+                            </div>
+                        </div>
+                        <div id="dash-milestones-chart" class="chart-container"></div>
+                    </article>
+
+                    <article class="chart-card card-span-6">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <h2 class="card-title">Fours and Sixes by Player</h2>
+                                <span class="card-subtitle">Boundary breakdown</span>
+                            </div>
+                        </div>
+                        <div id="dash-boundaries-chart" class="chart-container"></div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ==================== 2. TEAMS DIRECTORY VIEW ==================== -->
+            <section class="page-view" id="view-teams">
+                <div class="hero-banner">
+                    <div class="hero-tag">🛡️ FRANCHISE DIRECTORY & STATISTICS</div>
+                    <h1 class="hero-title">IPL <span>Teams Directory</span></h1>
+                    <p class="hero-subtitle">Explore team records, historical match wins, total runs, and franchise titles.</p>
+                    <div class="hero-graphic">🛡️</div>
+                </div>
+
+                <div class="teams-cards-grid" id="teams-cards-container">
+                    <!-- Dynamic Team Cards Rendered Here -->
+                </div>
+            </section>
+
+            <!-- ==================== 3. TEAM DETAILS VIEW ==================== -->
+            <section class="page-view" id="view-team-detail">
+                <div class="profile-card" style="margin-bottom: 24px;">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="team-detail-avatar">MI</div>
+                        <div>
+                            <h2 style="font-size: 28px; font-weight: 800;" id="team-detail-title">Mumbai Indians</h2>
+                            <span style="font-size: 13px; color: #94A3B8;" id="team-detail-subtitle">IPL Franchise Profile</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats-grid">
+                        <div class="profile-stat-box">
+                            <label>Matches</label>
+                            <span id="td-matches">0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>Wins / Losses</label>
+                            <span id="td-wins">0 / 0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>Win Rate</label>
+                            <span id="td-winpct">0%</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>IPL Titles</label>
+                            <span id="td-titles">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-grid">
+                    <article class="chart-card card-span-6">
+                        <div class="card-header">
+                            <h3 class="card-title">Runs by Season</h3>
+                        </div>
+                        <div id="team-season-runs-chart" class="chart-container"></div>
+                    </article>
+                    <article class="chart-card card-span-6">
+                        <div class="card-header">
+                            <h3 class="card-title">Boundaries by Season</h3>
+                        </div>
+                        <div id="team-season-boundaries-chart" class="chart-container"></div>
+                    </article>
+                </div>
+
+                <div class="chart-card card-span-12" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Top Players for Team</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Matches</th>
+                                    <th>Runs</th>
+                                    <th>Strike Rate</th>
+                                    <th>Fours</th>
+                                    <th>Sixes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="team-top-players-body">
+                                <tr><td colspan="6">Loading team players...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 4. PLAYERS DIRECTORY VIEW ==================== -->
+            <section class="page-view" id="view-players">
+                <div class="hero-banner">
+                    <div class="hero-tag">🏏 PLAYER DIRECTORY & LEAGUE STATS</div>
+                    <h1 class="hero-title">IPL <span>Players Analytics</span></h1>
+                    <p class="hero-subtitle">Search, filter, and analyze player performance metrics across IPL seasons.</p>
+                    <div class="hero-graphic">🏏</div>
+                </div>
+
+                <!-- PLAYER FILTERS -->
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <div class="filter-item">
+                            <label for="players-search-input">Search Player</label>
+                            <input type="text" id="players-search-input" class="filter-select" placeholder="Enter player name..." style="min-width: 180px;">
+                        </div>
+                        <div class="filter-item">
+                            <label for="players-season-filter">Season</label>
+                            <select id="players-season-filter" class="filter-select">
+                                <option value="all">All Seasons</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="players-team-filter">Team</label>
+                            <select id="players-team-filter" class="filter-select">
+                                <option value="all">All Teams</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="players-min-runs">Min Runs</label>
+                            <select id="players-min-runs" class="filter-select">
+                                <option value="0">0+ Runs</option>
+                                <option value="500">500+ Runs</option>
+                                <option value="1000">1000+ Runs</option>
+                                <option value="3000">3000+ Runs</option>
+                            </select>
+                        </div>
+                        <div class="filter-item" style="align-self: flex-end;">
+                            <button type="button" id="players-reset-btn" class="btn-reset" style="padding: 9px 14px; font-size: 13px;">↺ Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PLAYER DIRECTORY TABLE -->
+                <div class="chart-card card-span-12">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Team(s)</th>
+                                    <th>Matches</th>
+                                    <th>Runs</th>
+                                    <th>Avg</th>
+                                    <th>Strike Rate</th>
+                                    <th>Fours</th>
+                                    <th>Sixes</th>
+                                    <th>50s / 100s</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players-table-body">
+                                <tr><td colspan="11">Loading player data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- PAGINATION -->
+                    <div class="pagination-bar" id="players-pagination"></div>
+                </div>
+            </section>
+
+            <!-- ==================== 5. PLAYER PROFILE VIEW ==================== -->
+            <section class="page-view" id="view-player-detail">
+                <div class="profile-card" style="margin-bottom: 24px;">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="player-profile-avatar">V</div>
+                        <div>
+                            <h2 style="font-size: 28px; font-weight: 800;" id="player-profile-name">Player Name</h2>
+                            <span style="font-size: 13px; color: #94A3B8;" id="player-profile-teams">IPL Career Analytics</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats-grid">
+                        <div class="profile-stat-box">
+                            <label>Matches</label>
+                            <span id="pp-matches">0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>Total Runs</label>
+                            <span id="pp-runs">0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>Batting Avg</label>
+                            <span id="pp-avg">0.0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>Strike Rate</label>
+                            <span id="pp-sr">0.0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>Highest Score</label>
+                            <span id="pp-hs">0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>Fours / Sixes</label>
+                            <span id="pp-boundaries">0 / 0</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <label>50s / 100s</label>
+                            <span id="pp-milestones">0 / 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D PLAYER PERFORMANCE STAGE -->
+                <div class="chart-card card-span-12" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">🏏 3D Player Hologram & Live Performance Highlights</h3>
+                    </div>
+                    <div id="player-3d-stage" class="player-3d-stage-container"></div>
+                </div>
+
+                <div class="section-grid">
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Runs by Season</h3></div>
+                        <div id="pp-season-runs-chart" class="chart-container"></div>
+                    </article>
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Strike Rate by Season</h3></div>
+                        <div id="pp-season-sr-chart" class="chart-container"></div>
+                    </article>
+                </div>
+
+                <div class="chart-card card-span-12" style="margin-top: 24px;">
+                    <div class="card-header"><h3 class="card-title">Season-by-Season Performance Table</h3></div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Season</th>
+                                    <th>Matches</th>
+                                    <th>Runs</th>
+                                    <th>Average</th>
+                                    <th>Strike Rate</th>
+                                    <th>Fours</th>
+                                    <th>Sixes</th>
+                                    <th>50s</th>
+                                    <th>100s</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pp-seasons-table-body">
+                                <tr><td colspan="9">Loading season data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 6. MATCHES VIEW ==================== -->
+            <section class="page-view" id="view-matches">
+                <div class="hero-banner">
+                    <div class="hero-tag">⚔️ MATCH HISTORY & SCORECARDS</div>
+                    <h1 class="hero-title">IPL <span>Match History</span></h1>
+                    <p class="hero-subtitle">Explore historical IPL match results, venues, and match scorecards.</p>
+                    <div class="hero-graphic">⚔️</div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <div class="filter-item">
+                            <label for="matches-search">Search Match</label>
+                            <input type="text" id="matches-search" class="filter-select" placeholder="Team, venue..." style="min-width: 160px;">
+                        </div>
+                        <div class="filter-item">
+                            <label for="matches-season">Season</label>
+                            <select id="matches-season" class="filter-select"><option value="all">All Seasons</option></select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="matches-team">Team</label>
+                            <select id="matches-team" class="filter-select"><option value="all">All Teams</option></select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="matches-venue">Venue</label>
+                            <select id="matches-venue" class="filter-select"><option value="all">All Venues</option></select>
+                        </div>
+                        <div class="filter-item" style="align-self: flex-end;">
+                            <button type="button" id="matches-reset-btn" class="btn-reset" style="padding: 9px 14px; font-size: 13px;">↺ Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="matches-list-grid" id="matches-list-container">
+                    <!-- Dynamic Matches Rendered Here -->
+                </div>
+
+                <div class="pagination-bar" id="matches-pagination" style="margin-top: 20px;"></div>
+            </section>
+
+            <!-- ==================== 7. MATCH DETAIL VIEW ==================== -->
+            <section class="page-view" id="view-match-detail">
+                <div class="hero-banner" style="background: linear-gradient(135deg, #0F172A, #1E3A8A);">
+                    <div class="hero-tag" id="md-season-tag">SEASON 2024</div>
+                    <h1 class="hero-title" id="md-title">Team 1 vs Team 2</h1>
+                    <p class="hero-subtitle" id="md-subtitle">Venue & Date info</p>
+                    <a href="/matches" class="btn-primary" style="margin-top: 14px; display: inline-flex; align-items: center; gap: 6px; width: fit-content;" data-link>← Back to Match History</a>
+                    <div class="hero-graphic">🏏</div>
+                </div>
+
+                <div class="section-grid">
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Match Result Summary</h3></div>
+                        <div class="insight-item" style="margin-bottom: 12px;">
+                            <div class="insight-badge">🏆</div>
+                            <div class="insight-details">
+                                <span class="insight-title">Winner</span>
+                                <span class="insight-player" id="md-winner">Winner Name</span>
+                                <span class="insight-metric" id="md-margin">Margin</span>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-badge">🎖️</div>
+                            <div class="insight-details">
+                                <span class="insight-title">Player of the Match</span>
+                                <span class="insight-player" id="md-potm">POTM Name</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Innings Scorecards</h3></div>
+                        <div class="insight-item" style="margin-bottom: 12px;">
+                            <div class="insight-badge">1️⃣</div>
+                            <div class="insight-details">
+                                <span class="insight-title" id="md-t1-name">1st Innings</span>
+                                <span class="insight-player" id="md-t1-score">0/0</span>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-badge">2️⃣</div>
+                            <div class="insight-details">
+                                <span class="insight-title" id="md-t2-name">2nd Innings</span>
+                                <span class="insight-player" id="md-t2-score">0/0</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ==================== 8. ANALYSIS VIEW ==================== -->
+            <section class="page-view" id="view-analysis">
+                <div class="hero-banner">
+                    <div class="hero-tag">📈 ADVANCED CORRELATIONS & LEAGUE TRENDS</div>
+                    <h1 class="hero-title">Advanced <span>IPL Analysis</span></h1>
+                    <p class="hero-subtitle">Discover multi-season trends, boundary percentages, and player strike rate correlations.</p>
+                    <div class="hero-graphic">📈</div>
+                </div>
+
+                <!-- SECTION 1: SEASON TRENDS -->
+                <div class="analysis-section-title">SECTION 1: Season Performance Trends</div>
+                <div class="section-grid">
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Total Runs by Season</h3></div>
+                        <div id="ana-season-runs-chart" class="chart-container"></div>
+                    </article>
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Avg Strike Rate by Season</h3></div>
+                        <div id="ana-season-sr-chart" class="chart-container"></div>
+                    </article>
+                </div>
+
+                <!-- SECTION 2: PLAYER SCATTER ANALYSIS -->
+                <div class="analysis-section-title" style="margin-top: 28px;">SECTION 2: Player Efficiency Analysis</div>
+                <div class="section-grid">
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Runs vs Strike Rate</h3></div>
+                        <div id="ana-runs-sr-scatter" class="chart-container"></div>
+                    </article>
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">Boundary % vs Strike Rate</h3></div>
+                        <div id="ana-boundary-sr-scatter" class="chart-container"></div>
+                    </article>
+                </div>
+
+                <!-- SECTION 3: TEAM ANALYSIS -->
+                <div class="analysis-section-title" style="margin-top: 28px;">SECTION 3: Team Win Percentage Comparison</div>
+                <div class="chart-card card-span-12">
+                    <div id="ana-team-winpct-chart" class="chart-container chart-tall"></div>
+                </div>
+
+                <!-- SECTION 4: 3D PLAYER PERFORMANCE MAP -->
+                <div class="analysis-section-title" style="margin-top: 28px;">SECTION 4: 3D Interactive Performance Scatter Map</div>
+                <div class="chart-card card-span-12">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <h3 class="card-title">🌐 3D Player Metric Map (Runs × Strike Rate × Sixes)</h3>
+                            <span class="card-subtitle">Drag to rotate • Scroll to zoom • Hover/Click points for player intelligence</span>
+                        </div>
+                    </div>
+                    <div id="analysis-3d-container" class="chart-container chart-3d-map"></div>
+                </div>
+            </section>
+
+            <!-- ==================== 9. REPORTS VIEW ==================== -->
+            <section class="page-view" id="view-reports">
+                <div class="hero-banner">
+                    <div class="hero-tag">📋 PERFORMANCE REPORT GENERATOR</div>
+                    <h1 class="hero-title">IPL <span>Reports & Exports</span></h1>
+                    <p class="hero-subtitle">Generate comprehensive IPL performance reports and export data to CSV format.</p>
+                    <div class="hero-graphic">📋</div>
+                </div>
+
+                <div class="performers-grid" style="margin-bottom: 28px;">
+                    <div class="performer-card">
+                        <span class="performer-badge">🏏 Player Report</span>
+                        <h3 class="performer-name">Player Performance Report</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Complete ranking and boundary breakdown of top batters.</p>
+                        <a href="/api/reports/export?type=players" class="btn-primary" style="text-align: center; text-decoration: none;">Download CSV</a>
+                    </div>
+                    <div class="performer-card">
+                        <span class="performer-badge">🛡️ Team Report</span>
+                        <h3 class="performer-name">Team Standings Report</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Official wins, losses, points, and NRR summary.</p>
+                        <a href="/api/reports/export?type=teams" class="btn-primary" style="text-align: center; text-decoration: none;">Download CSV</a>
+                    </div>
+                </div>
+
+                <!-- REPORT PREVIEW -->
+                <div class="chart-card card-span-12">
+                    <div class="card-header">
+                        <h3 class="card-title">Report Live Preview</h3>
+                    </div>
+                    <div id="report-preview-box" class="report-preview-container">
+                        <p style="text-align: center; padding: 20px; color: var(--text-muted);">Select or generate a report above to view live preview.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== 10. SETTINGS VIEW ==================== -->
+            <section class="page-view" id="view-settings">
+                <div class="hero-banner">
+                    <div class="hero-tag">⚙️ SYSTEM & USER CONFIGURATION</div>
+                    <h1 class="hero-title">Platform <span>Settings</span></h1>
+                    <p class="hero-subtitle">Customize application preferences, appearance themes, and default filters.</p>
+                    <div class="hero-graphic">⚙️</div>
+                </div>
+
+                <div class="section-grid">
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">👤 User Profile</h3></div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <label style="font-size: 12px; font-weight: 700; color: var(--text-muted);">ANALYST NAME</label>
+                            <input type="text" class="filter-select" value="IPL Analyst" readonly>
+                            <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-top: 8px;">ROLE</label>
+                            <input type="text" class="filter-select" value="Lead Data Engineer" readonly>
+                        </div>
+                    </article>
+
+                    <article class="chart-card card-span-6">
+                        <div class="card-header"><h3 class="card-title">🎨 Appearance & Preferences</h3></div>
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Theme Preference</span>
+                                <button id="theme-toggle-btn" class="btn-reset">🌙 Dark Navy (Default)</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Default Season</span>
+                                <select class="filter-select"><option>All Seasons</option></select>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- STATUS MESSAGE -->
+        <p id="status-message" class="status-message" role="status"></p>
+
+        <!-- PERSISTENT FOOTER -->
+        <footer class="page-footer">
+            <div>
+                <span class="footer-brand">IPL Performance Analytics Dashboard</span>
+                <p style="font-size: 12px; margin-top: 2px;">Data-driven insights for a smarter game • IPL Seasons 2008–2026</p>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <span>Data Visualization Project</span><br>
+                <span>Made by Tusar, Prince, Rehan, Nehanth</span>
+            </div>
+        </footer>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/three-manager.js') }}"></script>
+<script src="{{ url_for('static', filename='js/router.js') }}"></script>
+</body>
+</html>

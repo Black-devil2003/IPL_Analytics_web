@@ -1,0 +1,11 @@
+position,team,matches,wins,defeats,ties,abandoned,points,nrr
+1,Punjab Kings,7,6,0,0,1,13,1.333
+2,Royal Challengers Bengaluru,8,6,2,0,0,12,1.919
+3,Sunrisers Hyderabad,8,5,3,0,0,10,0.815
+4,Rajasthan Royals,8,5,3,0,0,10,0.602
+5,Gujarat Titans,8,4,4,0,0,8,-0.475
+6,Chennai Super Kings,8,3,5,0,0,6,-0.121
+7,Delhi Capitals,8,3,5,0,0,6,-1.06
+8,Kolkata Knight Riders,8,2,5,0,1,5,0.751
+9,Mumbai Indians,7,2,5,0,0,4,-0.736
+10,Lucknow Super Giants,8,2,6,0,0,4,-1.106

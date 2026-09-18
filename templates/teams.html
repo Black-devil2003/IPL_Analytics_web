@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Team Performance & Standings</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+<div class="dashboard-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="/">
+            <img class="brand-logo" src="{{ url_for('static', filename='images/IPL.png') }}" alt="IPL Logo" onerror="this.src='https://img.icons8.com/color/96/cricket.png'">
+            <div class="brand-info">
+                <span class="brand-text">IPL Analytics</span>
+                <span class="brand-subtitle">Data • Insights • Performance</span>
+            </div>
+        </a>
+
+        <nav class="side-nav">
+            <a href="/">
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/teams" class="active">
+                <span class="nav-icon">🛡️</span>
+                <span>Teams</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer-note">
+            <strong>IPL 2008–2026</strong>
+            <span>Data-driven cricket intelligence</span>
+        </div>
+    </aside>
+
+    <!-- MOBILE MENU TOGGLE -->
+    <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+        ☰
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="team-search" placeholder="Search teams, standings..." autocomplete="off">
+            </div>
+
+            <div class="header-actions">
+                <button class="notification-btn" title="Notifications">
+                    🔔
+                    <span class="notification-badge"></span>
+                </button>
+
+                <div class="user-profile">
+                    <div class="user-avatar">IA</div>
+                    <div class="user-info">
+                        <span class="user-name">IPL Analyst</span>
+                        <span class="user-role">Lead Data Engineer</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO BANNER -->
+        <section class="hero-banner">
+            <div class="hero-tag">
+                🏆 FRANCHISE STANDINGS & ANALYTICS
+            </div>
+            <h1 class="hero-title">
+                IPL Team <span>Performance</span> & Standings
+            </h1>
+            <p class="hero-subtitle">
+                Compare team standings, matches won, total points, and net run rate across seasons from 2008 to 2026.
+            </p>
+            <div class="hero-graphic">🛡️</div>
+        </section>
+
+        <!-- FILTER BAR -->
+        <section class="filter-bar">
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="team-season-filter">Select Season</label>
+                    <select id="team-season-filter" class="filter-select">
+                        <option value="all">All Seasons</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- KPI SUMMARY CARDS -->
+        <section class="kpi-grid">
+            <article class="kpi-card runs-card">
+                <div class="kpi-icon-wrap">🏆</div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Leading Team</span>
+                    <strong class="kpi-value" id="leading-team">--</strong>
+                    <span class="kpi-subtitle" id="leading-team-points">--</span>
+                </div>
+            </article>
+
+            <article class="kpi-card fours-card">
+                <div class="kpi-icon-wrap">⭐</div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Highest Points</span>
+                    <strong class="kpi-value" id="highest-points">--</strong>
+                    <span class="kpi-subtitle">Points</span>
+                </div>
+            </article>
+
+            <article class="kpi-card sixes-card">
+                <div class="kpi-icon-wrap">🥇</div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Most Wins</span>
+                    <strong class="kpi-value" id="most-wins">--</strong>
+                    <span class="kpi-subtitle" id="most-wins-count">--</span>
+                </div>
+            </article>
+
+            <article class="kpi-card strike-card">
+                <div class="kpi-icon-wrap">📈</div>
+                <div class="kpi-content">
+                    <span class="kpi-label">Best NRR</span>
+                    <strong class="kpi-value" id="best-nrr">--</strong>
+                    <span class="kpi-subtitle" id="best-nrr-team">--</span>
+                </div>
+            </article>
+        </section>
+
+        <!-- CHARTS SECTION -->
+        <section class="section-grid">
+            <article class="chart-card card-span-6">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <h2 class="card-title">🏆 Team Points Comparison</h2>
+                        <span class="card-subtitle">Points earned by each team</span>
+                    </div>
+                </div>
+                <div id="team-points-chart" class="chart-container"></div>
+            </article>
+
+            <article class="chart-card card-span-6">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <h2 class="card-title">🥇 Team Wins Comparison</h2>
+                        <span class="card-subtitle">Number of matches won by each team</span>
+                    </div>
+                </div>
+                <div id="team-wins-chart" class="chart-container"></div>
+            </article>
+        </section>
+
+        <!-- STANDINGS TABLE -->
+        <section class="chart-card card-span-12" style="margin-bottom: 28px;">
+            <div class="card-header">
+                <div class="card-title-group">
+                    <h2 class="card-title">📊 IPL Official Team Standings</h2>
+                    <span class="card-subtitle">Detailed matches, wins, losses, points and net run rate</span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="data-table" id="teams-table">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Team</th>
+                            <th>P</th>
+                            <th>W</th>
+                            <th>L</th>
+                            <th>T</th>
+                            <th>NR</th>
+                            <th>Pts</th>
+                            <th>NRR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="team-table-body">
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 20px;">Loading team data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="page-footer">
+            <div>
+                <span class="footer-brand">IPL Performance Analytics Dashboard</span>
+                <p style="font-size: 12px; margin-top: 2px;">Data-driven insights for a smarter game • IPL Seasons 2008–2026</p>
+            </div>
+            <div style="text-align: right; font-size: 12px;">
+                <span>Data Visualization Project</span><br>
+                <span>Made by Tusar, Prince, Rehan, Nehanth</span>
+            </div>
+        </footer>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/team.js') }}"></script>
+</body>
+</html>

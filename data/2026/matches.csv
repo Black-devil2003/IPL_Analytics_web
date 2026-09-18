@@ -1,0 +1,40 @@
+match_id,date,venue,team1,team2,stage,toss_winner,toss_decision,first_ings_score,first_ings_wkts,second_ings_score,second_ings_wkts,match_result,match_winner,wb_runs,wb_wickets,balls_left,player_of_the_match,top_scorer,highscore,best_bowling,best_bowling_figure,super_over_match
+1,"March 28, 2026","M. Chinnaswamy Stadium, Bangalore",RCB,SRH,League,RCB,Bowl,201,9,203,4,completed,RCB,,6,26,Jacob Duffy,Ishan Kishan,80,Jacob Duffy,3--22,No
+2,"March 29, 2026","Wankhede Stadium, Mumbai",MI,KKR,League,MI,Bowl,220,4,224,4,completed,MI,,6,5,Shardul Thakur,Ryan Rickelton,81,Shardul Thakur,3--39,No
+3,"March 30, 2026","Barsapara Stadium, Guwahati",RR,CSK,League,RR,Bowl,127,10,128,2,completed,RR,,8,47,Nandre Burger,Vaibhav Sooryavanshi,52,Jofra Archer,2--19,No
+4,"March 31, 2026","New PCA Cricket Stadium, Mullanpur",PBKS,GT,League,PBKS,Bowl,162,6,165,7,completed,PBKS,,3,5,Cooper Connolly,Cooper Connolly,72,Prasidh Krishna,3--29,No
+5,"April 01, 2026","Ekana Cricket Stadium, Lucknow",LSG,DC,League,DC,Bowl,141,10,145,4,completed,DC,,6,17,Sameer Rizvi,Sameer Rizvi,70,Lungi Ngidi,3--27,No
+6,"April 02, 2026","Eden Gardens, Kolkata",KKR,SRH,League,KKR,Bowl,226,8,161,10,completed,SRH,65,,24,Nitish Kumar Reddy,Angkrish Raghuvanshi,52,Blessing Muzarabani,4--41,No
+7,"April 03, 2026","MA Chidambaram Stadium, Chennai",CSK,PBKS,League,PBKS,Bowl,209,5,210,5,completed,PBKS,,5,8,Priyansh Arya,Ayush Matre,73,Vijaykumar Vyshak,2--38,No
+8,"April 04, 2026","Arun Jaitley Stadium, Delhi",DC,MI,League,DC,Bowl,162,6,164,4,completed,DC,,6,11,Sameer Rizvi,Sameer Rizvi,90,Mukesh Kumar,2--26,No
+9,"April 04, 2026","Narendra Modi Stadium, Ahmedabad",GT,RR,League,RR,Bat,210,6,204,8,completed,RR,6,,0,Ravi Bishnoi,Dhruv Jurel,75,Ravi Bishnoi,4--41,No
+10,"April 05, 2026","Rajiv Gandhi International Stadium, Hyderabad",SRH,LSG,League,LSG,Bowl,156,9,160,5,completed,LSG,,5,1,Mohammed Shami,Rishabh Pant,68,Mohammed Shami,2--9,No
+11,"April 05, 2026","M. Chinnaswamy Stadium, Bangalore",RCB,CSK,League,CSK,Bowl,250,3,207,10,completed,RCB,43,,2,Tim David,Tim David,70,Bhuvneshwar Kumar,3--41,No
+12,"April 06, 2026","Eden Gardens, Kolkata",KKR,PBKS,League,KKR,Bat,,,,,abandoned,,,,,,,,,,No
+13,"April 07, 2026","Barsapara Stadium, Guwahati",RR,MI,League,MI,Bowl,150,3,123,9,completed,RR,27,,0,Yashasvi Jaiswal,Yashasvi Jaiswal,77,Sandeep Sharma,2--26,No
+14,"April 08, 2026","Arun Jaitley Stadium, Delhi",DC,GT,League,DC,Bowl,210,4,209,8,completed,GT,1,,0,Rashid Khan,KL Rahul,92,Rashid Khan,3--17,No
+15,"April 09, 2026","Eden Gardens, Kolkata",KKR,LSG,League,LSG,Bowl,181,4,182,7,completed,LSG,,3,0,Mukul Choudhary,Mukul Choudhary,54,Anukul Roy,2--32,No
+16,"April 10, 2026","Barsapara Stadium, Guwahati",RR,RCB,League,RR,Bowl,201,8,202,4,completed,RR,,6,12,Vaibhav Sooryavanshi,Dhruv Jurel,81,Krunal Pandya,2--30,No
+17,"April 11, 2026","New PCA Cricket Stadium, Mullanpur",PBKS,SRH,League,PBKS,Bowl,219,6,223,4,completed,PBKS,,6,7,Shreyas Iyer,Abhishek Sharma,74,Shivang Kumar,3--33,No
+18,"April 11, 2026","MA Chidambaram Stadium, Chennai",CSK,DC,League,DC,Bowl,212,2,189,10,completed,CSK,23,,0,Sanju Samson,Sanju Samson,115,Jamie Overton,4--18,No
+19,"April 12, 2026","Ekana Cricket Stadium, Lucknow",LSG,GT,League,GT,Bowl,164,8,165,3,completed,GT,,7,8,Prasidh Krishna,Jos Buttler,60,Prasidh Krishna,4--28,No
+20,"April 12, 2026","Wankhede Stadium, Mumbai",MI,RCB,League,MI,Bowl,240,4,222,5,completed,RCB,18,,0,Phil Salt,Phil Salt,78,Suyash Sharma,2--47,No
+21,"April 13, 2026","Rajiv Gandhi International Stadium, Hyderabad",SRH,RR,League,RR,Bowl,216,6,159,10,completed,SRH,57,,6,Praful Hinge,Ishan Kishan,91,Sakib Hussain,4--24,No
+22,"April 14, 2026","MA Chidambaram Stadium, Chennai",CSK,KKR,League,KKR,Bowl,192,5,160,7,completed,CSK,32,,0,Noor Ahmad,Sanju Samson,48,Noor Ahmad,3--21,No
+23,"April 15, 2026","M. Chinnaswamy Stadium, Bangalore",RCB,LSG,League,RCB,Bowl,146,10,149,5,completed,RCB,,5,29,Josh Hazlewood,Virat Kohli,49,Rasikh Salam,4--24,No
+24,"April 16, 2026","Wankhede Stadium, Mumbai",MI,PBKS,League,PBKS,Bowl,195,6,198,3,completed,PBKS,,7,21,Arshdeep Singh,Quinton de Kock,112,Arshdeep Singh,3--22,No
+25,"April 17, 2026","Narendra Modi Stadium, Ahmedabad",GT,KKR,League,KKR,Bat,180,10,181,5,completed,GT,,5,2,Shubman Gill,Shubman Gill,86,Kagiso Rabada,3--29,No
+26,"April 18, 2026","M. Chinnaswamy Stadium, Bangalore",RCB,DC,League,DC,Bowl,175,8,179,4,completed,DC,,6,1,Tristan Stubbs,Phil Salt,63,Bhuvneshwar Kumar,3--26,No
+27,"April 18, 2026","Rajiv Gandhi International Stadium, Hyderabad",SRH,CSK,League,CSK,Bowl,194,9,184,8,completed,SRH,10,,0,Eshan Malinga,Abhishek Sharma,59,Eshan Malinga,3--29,No
+28,"April 19, 2026","Eden Gardens, Kolkata",KKR,RR,League,RR,Bat,155,9,161,6,completed,KKR,,4,2,Varun Chakravarthy,Rinku Singh,53,Varun Chakravarthy,3--14,No
+29,"April 19, 2026","New PCA Cricket Stadium, Mullanpur",PBKS,LSG,League,LSG,Bowl,254,7,200,5,completed,PBKS,54,,0,Priyansh Arya,Priyansh Arya,93,Prince Yadav,2--25,No
+30,"April 20, 2026","Narendra Modi Stadium, Ahmedabad",GT,MI,League,GT,Bowl,199,5,100,10,completed,MI,99,,25,Tilak Varma,Tilak Varma,101,Ashwani Kumar,4--24,No
+31,"April 21, 2026","Rajiv Gandhi International Stadium, Hyderabad",SRH,DC,League,DC,Bowl,242,2,195,9,completed,SRH,47,,0,Abhishek Sharma,Abhishek Sharma,135,Eshan Malinga,4--32,No
+32,"April 22, 2026","Ekana Cricket Stadium, Lucknow",LSG,RR,League,LSG,Bowl,159,6,119,10,completed,LSG,40,,12,Ravindra Jadeja,Mitchell Marsh,55,Jofra Archer,3--20,No
+33,"April 23, 2026","Wankhede Stadium, Mumbai",MI,CSK,League,MI,Bowl,207,6,104,10,completed,CSK,103,,6,Sanju Samson,Sanju Samson,101,Akeal Hosein,4--17,No
+34,"April 24, 2026","M. Chinnaswamy Stadium, Bangalore",RCB,GT,League,RCB,Bowl,205,3,206,5,completed,RCB,,5,7,Virat Kohli,Sai Sudarshan,100,Rashid Khan,2--49,No
+35,"April 25, 2026","Arun Jaitley Stadium, Delhi",DC,PBKS,League,DC,Bat,264,2,265,4,completed,PBKS,,6,7,KL Rahul,KL Rahul,152,Kuldeep Yadav,2--46,No
+36,"April 25, 2026","Sawai Mansingh Stadium, Jaipur",RR,SRH,League,SRH,Bowl,228,6,229,5,completed,SRH,,5,9,Ishan Kishan,Vaibhav Sooryavanshi,103,Jofra Archer,2--34,No
+37,"April 26, 2026","Narendra Modi Stadium, Ahmedabad",GT,CSK,League,GT,Bowl,158,7,162,2,completed,GT,,8,20,Kagiso Rabada,Sai Sudarshan,87,Kagiso Rabada,3--25,No
+38,"April 26, 2026","Ekana Cricket Stadium, Lucknow",LSG,KKR,League,LSG,Bowl,155,7,155,8,completed,KKR,,,5,Rinku Singh,Rinku Singh,83,Mohsin Khan,5--23,Yes
+39,"April 27, 2026","Arun Jaitley Stadium, Delhi",DC,RCB,League,RCB,Bowl,75,10,77,1,completed,RCB,,9,81,Josh Hazlewood,Devdutt Padikkal,34,Josh Hazlewood,4--12,No
